@@ -71,6 +71,7 @@ def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
         all_notes.extend(item)
+        print(all_notes)
     number_of_output_notes=len(set(all_notes))
     return number_of_output_notes
 
