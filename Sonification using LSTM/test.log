@@ -161,3 +161,48 @@ DEBUG:root:File that is being parsed currently is D:\Prem\Sem1\MM in AI\Project\
 DEBUG:root:File that is being parsed currently is D:\Prem\Sem1\MM in AI\Project\Project\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_6_2.mid
 DEBUG:root:File that is being parsed currently is D:\Prem\Sem1\MM in AI\Project\Project\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_6_2.mid
 DEBUG:root:File that is being parsed currently is D:\Prem\Sem1\MM in AI\Project\Project\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_6_2.mid
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\jedi\third_party\typeshed\stdlib\2and3\builtins.pyi
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\jedi\third_party\typeshed\stdlib\3\sys.pyi
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\typing.py
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\jedi\third_party\typeshed\stdlib\3\typing.pyi
+DEBUG:matplotlib.pyplot:Loaded backend module://ipykernel.pylab.backend_inline version unknown.
+DEBUG:matplotlib.pyplot:Loaded backend module://ipykernel.pylab.backend_inline version unknown.
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\jedi\third_party\typeshed\stdlib\2and3\builtins.pyi
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\importlib\_bootstrap_external.py
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\importlib\_bootstrap.py
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\music21\base.py
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\numpy\__init__.py
+DEBUG:parso.cache:pickle loaded: C:\Users\utkar\Anaconda3\envs\pytorch_env\lib\site-packages\jedi\third_party\typeshed\stdlib\3\sys.pyi
+DEBUG:parso.python.diff:diff parser start
+DEBUG:parso.python.diff:line_lengths old: 2; new: 2
+DEBUG:parso.python.diff:-> code[equal] old[1:1] new[1:1]
+DEBUG:parso.python.diff:parse_part from 1 to 2 (to 1 in part parser)
+DEBUG:parso.python.diff:-> code[replace] old[2:2] new[2:2]
+DEBUG:parso.python.diff:diff parser end
+DEBUG:parso.python.diff:diff parser start
+DEBUG:parso.python.diff:line_lengths old: 150; new: 149
+DEBUG:parso.python.diff:-> code[equal] old[1:135] new[1:135]
+DEBUG:parso.python.diff:copy old[1:108] new[1:108]
+DEBUG:parso.python.diff:parse_part from 109 to 136 (to 136 in part parser)
+DEBUG:parso.python.diff:-> code[delete] old[136:136] new[136:135]
+DEBUG:parso.python.diff:-> code[equal] old[137:150] new[136:149]
+DEBUG:parso.python.diff:copy old[138:149] new[137:148]
+DEBUG:parso.python.diff:diff parser end
+DEBUG:matplotlib.pyplot:Loaded backend module://ipykernel.pylab.backend_inline version unknown.
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_1_1.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_1_2.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_1_3.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_2_1.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_2_2.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_2_3.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_3_1.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_3_2.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_3_3.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_4_1.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_4_2.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_4_3.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_5_1.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_5_2.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_5_3.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_6_1.mid
+DEBUG:root:File that is being parsed currently is C:\Users\utkar\Downloads\Github Repos\SonificationML\Dataset\Clementi dataset\Clementi dataset\clementi_opus36_6_2.mid

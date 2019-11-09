@@ -109,8 +109,30 @@ def generate_training_data(notes,number_of_output_notes_generated):
 
     
 
-if __name__ == '__main__':
-    path=sys.argv[1]  
+# if __name__ == '__main__':
+#     path=sys.argv[1]
+#     print('path is :-', path)
+#     #print(os.getcwd())
+#     #path = os.listdir('Dataset/Clementi dataset/Clementi Dataset')
+#     #print(path)
+#     pattern = "*.mid"
+#     notes=[]
+#     if not path.endswith(".mid"):
+#         for path, subdirs, files in os.walk(path):
+#             for name in files:
+#                 if fnmatch(name, pattern):
+#                     notes.append(extract_right_notes(os.path.join(path, name)))
+#     else:        
+#         notes.append(extract_right_notes(path))
+    
+#     number_of_output_notes=number_of_output_notes_generated(notes)
+#     network_input,network_output=generate_training_data(notes,number_of_output_notes)
+#     print(network_input)
+#     print(network_output)
+
+
+def preprocess_notes(path):
+    #path=sys.argv[1]
     pattern = "*.mid"
     notes=[]
     if not path.endswith(".mid"):
@@ -123,5 +145,4 @@ if __name__ == '__main__':
     
     number_of_output_notes=number_of_output_notes_generated(notes)
     network_input,network_output=generate_training_data(notes,number_of_output_notes)
-    print(network_input)
-    print(network_output)
+    return network_input,network_output
