@@ -5,7 +5,8 @@ import numpy as np
 import os
 import logging
 from fnmatch import fnmatch
-from keras.utils import np_utils
+import torch 
+
 #Create a Logging File
 logging.basicConfig(filename="test.log", level=logging.DEBUG)
 
@@ -60,13 +61,14 @@ def create_midi(melody, filename):
 
     midi_stream = stream.Stream(output_notes)
     cwd=os.getcwd()
+    cwd="\\".join(str(cwd).split("\\")[:-1])
     filename = str(filename.split("\\")[-1])
-    if(os.path.exists(os.path.join(cwd,"dataset1"))):
+    if(os.path.exists(os.path.join(cwd,"Training_Data"))):
         pass
     else:
-        os.makedirs(os.path.join(cwd,"dataset1"))
+        os.makedirs(os.path.join(cwd,"Training_Data"))
     
-    midi_stream.write('midi', fp=os.path.join(cwd,'dataset1',filename))
+    midi_stream.write('midi', fp=os.path.join(cwd,'Training_Data',filename))
 def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
@@ -96,39 +98,23 @@ def generate_training_data(notes,number_of_output_notes_generated):
             network_output.append(note_to_int[sequence_out])
     
     assert len(network_input) == len(network_output), len(network_input)
-
-    n_patterns = len(network_input)
-
-    # reshape the input into a format compatible with LSTM layers
-    network_input = np.reshape(network_input, (n_patterns, sequence_length, 1))
-    # normalize input
-    # print((network_output))
-    network_output = np_utils.to_categorical(network_output)
-
+    # network_output = np_utils.to_categorical(network_output)
+    # print(network_output)
     return (network_input, network_output)
 
+def one_hot_encode(arr, n_labels):
     
+    # Initialize the the encoded array
+    one_hot = np.zeros((arr.size, n_labels), dtype=np.float32)
+    
+    # Fill the appropriate elements with ones
+    one_hot[np.arange(one_hot.shape[0]), arr.flatten()] = 1.
+    
+    # Finally reshape it to get back to the original array
+    one_hot = one_hot.reshape((*arr.shape, n_labels))
+    
+    return one_hot
 
-# if __name__ == '__main__':
-#     path=sys.argv[1]
-#     print('path is :-', path)
-#     #print(os.getcwd())
-#     #path = os.listdir('Dataset/Clementi dataset/Clementi Dataset')
-#     #print(path)
-#     pattern = "*.mid"
-#     notes=[]
-#     if not path.endswith(".mid"):
-#         for path, subdirs, files in os.walk(path):
-#             for name in files:
-#                 if fnmatch(name, pattern):
-#                     notes.append(extract_right_notes(os.path.join(path, name)))
-#     else:        
-#         notes.append(extract_right_notes(path))
-    
-#     number_of_output_notes=number_of_output_notes_generated(notes)
-#     network_input,network_output=generate_training_data(notes,number_of_output_notes)
-#     print(network_input)
-#     print(network_output)
 
 
 def preprocess_notes(path):
@@ -145,4 +131,7 @@ def preprocess_notes(path):
     
     number_of_output_notes=number_of_output_notes_generated(notes)
     network_input,network_output=generate_training_data(notes,number_of_output_notes)
+    network_input=one_hot_encode(np.asarray(network_input),number_of_output_notes)
+    network_input=torch.tensor(network_input)
+    network_output=torch.tensor(network_output)
     return network_input,network_output
