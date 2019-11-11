@@ -39,7 +39,7 @@ def get_notes(filename):
     for element in notes_to_parse:
         if isinstance(element, note.Note):
             notes_i.append(str(element.pitch))
-            notes_pitch.append(str(element.pitch.midi))
+            #print(element.pitch.midi)
         elif isinstance(element, chord.Chord):
             # Taking the note with the highest octave.
             notes_i.append(str(element.pitches[-1])) 
@@ -78,6 +78,7 @@ def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
         all_notes.extend(item)
+        print(all_notes)
     number_of_output_notes=len(set(all_notes))
     return number_of_output_notes
 
@@ -130,7 +131,6 @@ def one_hot_encode(arr, n_labels):
     
     return one_hot
 
-
 def preprocess_notes(path):
     # path=sys.argv[1]
     pattern = "*.mid"
@@ -144,7 +144,19 @@ def preprocess_notes(path):
         notes.append(extract_right_notes(path))
     number_of_output_notes=number_of_output_notes_generated(notes)
     network_input,network_output=generate_training_data(notes,number_of_output_notes)
+    #network_input=one_hot_encode(np.asarray(network_input),number_of_output_notes)
+    for i in range(len(network_input)):
+        for j in range(len(network_input[i])):
+            temp=[]
+            
+            temp.append((network_input[i][j]))
+            # print(type(temp[0]))
+            network_input[i][j]=temp
+    network_input = np.asarray(network_input,dtype=np.float32)
+
+    # #print(network_input)
     network_input=torch.tensor(network_input)
+    # print(type(network_input[0][0][0]))
     network_output=torch.tensor(network_output)
 
     return network_input,network_output
