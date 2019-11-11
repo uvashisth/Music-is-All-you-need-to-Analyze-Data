@@ -5,7 +5,8 @@ import numpy as np
 import os
 import logging
 from fnmatch import fnmatch
-from keras.utils import np_utils
+import torch 
+
 #Create a Logging File
 logging.basicConfig(filename="test.log", level=logging.DEBUG)
 
@@ -36,6 +37,7 @@ def get_notes(filename):
     for element in notes_to_parse:
         if isinstance(element, note.Note):
             notes_i.append(str(element.pitch))
+            #print(element.pitch.midi)
         elif isinstance(element, chord.Chord):
             # Taking the note with the highest octave.
             notes_i.append(str(element.pitches[-1])) 
@@ -60,13 +62,14 @@ def create_midi(melody, filename):
 
     midi_stream = stream.Stream(output_notes)
     cwd=os.getcwd()
+    cwd="\\".join(str(cwd).split("\\")[:-1])
     filename = str(filename.split("\\")[-1])
-    if(os.path.exists(os.path.join(cwd,"dataset1"))):
+    if(os.path.exists(os.path.join(cwd,"Training_Data"))):
         pass
     else:
-        os.makedirs(os.path.join(cwd,"dataset1"))
+        os.makedirs(os.path.join(cwd,"Training_Data"))
     
-    midi_stream.write('midi', fp=os.path.join(cwd,'dataset1',filename))
+    midi_stream.write('midi', fp=os.path.join(cwd,'Training_Data',filename))
 def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
@@ -97,21 +100,25 @@ def generate_training_data(notes,number_of_output_notes_generated):
             network_output.append(note_to_int[sequence_out])
     
     assert len(network_input) == len(network_output), len(network_input)
-
-    n_patterns = len(network_input)
-
-    # reshape the input into a format compatible with LSTM layers
-    network_input = np.reshape(network_input, (n_patterns, sequence_length, 1))
-    # normalize input
-    # print((network_output))
-    network_output = np_utils.to_categorical(network_output)
-
+    # network_output = np_utils.to_categorical(network_output)
+    # print(network_output)
     return (network_input, network_output)
 
+def one_hot_encode(arr, n_labels):
     
+    # Initialize the the encoded array
+    one_hot = np.zeros((arr.size, n_labels), dtype=np.float32)
+    
+    # Fill the appropriate elements with ones
+    one_hot[np.arange(one_hot.shape[0]), arr.flatten()] = 1.
+    
+    # Finally reshape it to get back to the original array
+    one_hot = one_hot.reshape((*arr.shape, n_labels))
+    
+    return one_hot
 
-if __name__ == '__main__':
-    path=sys.argv[1]  
+def preprocess_notes(path):
+    #path=sys.argv[1]
     pattern = "*.mid"
     notes=[]
     if not path.endswith(".mid"):
@@ -124,5 +131,23 @@ if __name__ == '__main__':
     
     number_of_output_notes=number_of_output_notes_generated(notes)
     network_input,network_output=generate_training_data(notes,number_of_output_notes)
-    print(network_input)
-    print(network_output)
+    #network_input=one_hot_encode(np.asarray(network_input),number_of_output_notes)
+    for i in range(len(network_input)):
+        for j in range(len(network_input[i])):
+            temp=[]
+            
+            temp.append((network_input[i][j]))
+            # print(type(temp[0]))
+            network_input[i][j]=temp
+    network_input = np.asarray(network_input,dtype=np.float32)
+
+    # #print(network_input)
+    network_input=torch.tensor(network_input)
+    # print(type(network_input[0][0][0]))
+    network_output=torch.tensor(network_output)
+    return network_input,network_output
+
+
+
+# if __name__ == "__main__":
+#     preprocess_notes("C:\\Users\\utkar\\Downloads\\Github Repos\\SonificationML\\Dataset")    
