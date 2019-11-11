@@ -69,11 +69,11 @@ def create_midi(melody, filename):
     cwd=os.getcwd()
     cwd="\\".join(str(cwd).split("\\")[:-1])
     filename = str(filename.split("\\")[-1])
-    if(os.path.exists(os.path.join(cwd,"Training_Data"))):
+    if(os.path.exists(os.path.join(cwd,"Dataset","Training_Data"))):
         pass
     else:
-        os.makedirs(os.path.join(cwd,"Training_Data"))
-    midi_stream.write('midi', fp=os.path.join(cwd,'Training_Data',filename))
+        os.makedirs(os.path.join(cwd,"Dataset","Training_Data"))
+    midi_stream.write('midi', fp=os.path.join(cwd,"Dataset",'Training_Data',filename))
 def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
