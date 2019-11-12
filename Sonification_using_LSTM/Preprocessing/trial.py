@@ -39,15 +39,16 @@ def get_notes(filename):
     for element in notes_to_parse:
         if isinstance(element, note.Note):
             notes_i.append(str(element.pitch))
-            #print(element.pitch.midi)
+            notes_pitch.append(str(element.pitch.midi))
         elif isinstance(element, chord.Chord):
             # Taking the note with the highest octave.
-            notes_i.append(str(element.pitches[-1])) 
+            print(element.pitches[-1])
             notes_pitch.append(str(element.pitches[-1].midi))
+            notes_i.append(str(element.pitches[-1])) 
     # print(notes_i)
     # print(notes_pitch)
     return notes_i
-    #return notes
+
 def create_midi(melody, filename):
     """ create a midi file from the notes """
     offset = 0
@@ -78,10 +79,15 @@ def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
         all_notes.extend(item)
-        print(all_notes)
     number_of_output_notes=len(set(all_notes))
     return number_of_output_notes
-
+def get_midi_number_notes_mapping(file_name):
+    d = {}
+    with open(file_name) as f:
+        for line in f:
+            (key, val) = line.split()
+            d[int(key)] = val
+    return d
 def generate_training_data(notes,number_of_output_notes_generated):
     sequence_length=50
     notes_from_training_data = []
@@ -94,26 +100,50 @@ def generate_training_data(notes,number_of_output_notes_generated):
     # for i in range(len(right_hand_notes)):
     #     right_hand_notes[i]=str(right_hand_notes[i]).replace("-","#")
      # create a dictionary to map pitches to integers
-    note_to_int = dict((note, number) for number, note in enumerate(right_hand_notes))
-    print(note_to_int)
+    note_to_midi_number_mapping=get_midi_number_notes_mapping("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Sonification using LSTM\\A.txt")
+    # for i in range(len(right_hand_notes)):
+    #     right_hand_notes[i]=right_hand_notes[i].replace("-","#")
+    note_to_int=[]
+    
+    for i in range(len(right_hand_notes)):
+        temp=0
+        for key,value in note_to_midi_number_mapping.items():
+            if  right_hand_notes[i] in value:
+                temp=key
+        note_to_int.append(temp)
+    note_to_int=sorted(note_to_int)
+    
+    note_to_int = dict((note, number) for number, note in enumerate(note_to_int))
     int_to_note={note:ii for ii,note in note_to_int.items()}
-    # print(int_to_note)
     network_input = []
     network_output = []
+    print("*******************************************************************************")
+    print(note_to_midi_number_mapping)
+    print(note_to_int)
+    print("*******************************************************************************")
     for song in notes:
         for i in range(0, len(song) - sequence_length, 1):
-            sequence_in = song[i:i + sequence_length]
+            
+            sequence_in = song[i:i + sequence_length]           
             sequence_out = song[i + sequence_length]
-            network_input.append([note_to_int[char] for char in sequence_in])
-            network_output.append(note_to_int[sequence_out])
+            for notes in range(len(sequence_in)):
+                for key,value in note_to_midi_number_mapping.items():
+                    if  str(sequence_in[notes]) in value:
+                        sequence_in[notes]=key
+            
+            for key,value in note_to_midi_number_mapping.items():
+                if  str(sequence_out) in value:
+                    sequence_out=key    
+            network_input.append( sequence_in)
+            network_output.append(int(sequence_out) )
+
     assert len(network_input) == len(network_output), len(network_input)
     # network_input=[network_i/float(number_of_output_notes_generated) for network_i in network_input]
     network_input=np.array(network_input)
-    n_patterns = len(network_input)
-    # reshape the input into a format compatible with LSTM layers
+    n_patterns = len(network_input)    
     network_input = np.reshape(network_input, (n_patterns, sequence_length, 1))
     network_input=network_input/float(number_of_output_notes_generated)
-    # network_output = np_utils.to_categorical(network_output)
+    
     # print(network_output)
     # print(network_input)
     return (network_input, network_output)
@@ -163,4 +193,5 @@ def preprocess_notes(path):
 
 if __name__=="__main__":
     input_tensor,output_tensor=preprocess_notes("D:\Prem\Sem1\MM in AI\Project\Project\Sonification-using-Deep-Learning\Dataset")
-    # print(input_tensor)
+    print(input_tensor)
+    print(output_tensor)    
