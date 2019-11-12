@@ -87,11 +87,8 @@ class PreprocessingTrainingData():
     Input Parameters: List of input values
     Output Parameters: List of normalized data
     """
-    def normalize_data(self,list_of_input_values):
-        #Find the maximum value from the list
-        max_value=max(list_of_input_values)
-        #Find the minimum value from the list
-        min_value=min(list_of_input_values)
+    def normalize_data(self,list_of_input_values,min_value,max_value):
+        
         #Normalize each value of the list
         for i in range(len(list_of_input_values)):
             list_of_input_values[i]=(list_of_input_values[i]-min_value)/(max_value-min_value)
@@ -139,9 +136,9 @@ class PreprocessingTrainingData():
         n_patterns = len(network_input)
         #Normalize the input data
         for i in range(len(network_input)):    
-            network_input[i]=self.normalize_data(network_input[i])
+            network_input[i]=self.normalize_data(network_input[i],min_midi_value,max_midi_value)
         #Normalize the output data    
-        network_output=self.normalize_data(network_output)
+        network_output=self.normalize_data(network_output,min_midi_value,max_midi_value)
         #Converting 2d list to 2d numpy array
         network_input=np.array(network_input)
         #Reshaping the 2d numpy array to 3d array
