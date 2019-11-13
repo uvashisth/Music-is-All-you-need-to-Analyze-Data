@@ -109,7 +109,7 @@ class PreprocessingTrainingData():
         # get all right hand note names
         right_hand_notes = sorted(set(item for item in notes_from_training_data))
         #Get note to midi number mapping
-        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("../A.txt")
+        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("A.txt")
         #Get maximum and minimum midi number values
         _,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
         
@@ -174,6 +174,8 @@ class PreprocessingTrainingData():
         return network_input,network_output,max_midi_number,min_midi_number,int_to_note
 
 
-# if __name__=="__main__":
-#     network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\Clementi dataset\\Clementi dataset\\clementi_opus36_1_1.mid")
+if __name__=="__main__":
+
+    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("..\\..\\Dataset\\Clementi dataset\\Clementi dataset")
+    print(network_input)
     

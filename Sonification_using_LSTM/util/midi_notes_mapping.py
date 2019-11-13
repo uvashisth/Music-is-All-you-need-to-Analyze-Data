@@ -9,5 +9,6 @@ class MidiNotesMapping():
         return note_to_midi_mapping
 if __name__=="__main__":
     A=MidiNotesMapping()
-    value=A.get_midi_number_notes_mapping("D:/Prem/Sem1/MM in AI/Project/Project/Sonification-using-Deep-Learning/Sonification using LSTM/A.txt")
+    print(os.getcwd())
+    value=A.get_midi_number_notes_mapping("../A.txt")
     print(value)
