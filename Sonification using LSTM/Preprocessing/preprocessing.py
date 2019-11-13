@@ -78,7 +78,7 @@ def number_of_output_notes_generated(notes):
     all_notes=[]
     for item in notes:
         all_notes.extend(item)
-        print(all_notes)
+        #print(all_notes)
     number_of_output_notes=len(set(all_notes))
     return number_of_output_notes
 
@@ -95,7 +95,7 @@ def generate_training_data(notes,number_of_output_notes_generated):
     #     right_hand_notes[i]=str(right_hand_notes[i]).replace("-","#")
      # create a dictionary to map pitches to integers
     note_to_int = dict((note, number) for number, note in enumerate(right_hand_notes))
-    print(note_to_int)
+    #print(note_to_int)
     int_to_note={note:ii for ii,note in note_to_int.items()}
     # print(int_to_note)
     network_input = []
@@ -161,6 +161,6 @@ def preprocess_notes(path):
 
     return network_input,network_output
 
-if __name__=="__main__":
-    input_tensor,output_tensor=preprocess_notes("D:\Prem\Sem1\MM in AI\Project\Project\Sonification-using-Deep-Learning\Dataset")
-    # print(input_tensor)
+# if __name__=="__main__":
+#     input_tensor,output_tensor=preprocess_notes("D:\Prem\Sem1\MM in AI\Project\Project\Sonification-using-Deep-Learning\Dataset")
+#     # print(input_tensor)
