@@ -174,6 +174,6 @@ class PreprocessingTrainingData():
         return network_input,network_output,max_midi_number,min_midi_number,int_to_note
 
 
-if __name__=="__main__":
-    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\Clementi dataset\\Clementi dataset\\clementi_opus36_1_1.mid")
+# if __name__=="__main__":
+#     network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\Clementi dataset\\Clementi dataset\\clementi_opus36_1_1.mid")
     
