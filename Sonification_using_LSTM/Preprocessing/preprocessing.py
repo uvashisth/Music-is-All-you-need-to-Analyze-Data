@@ -111,7 +111,7 @@ class PreprocessingTrainingData():
         #Get note to midi number mapping
         note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("A.txt")
         #Get maximum and minimum midi number values
-        _,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
+        note_to_int,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
         
         
         network_input = []
@@ -137,8 +137,9 @@ class PreprocessingTrainingData():
         #Normalize the input data
         for i in range(len(network_input)):    
             network_input[i]=self.normalize_data(network_input[i],min_midi_value,max_midi_value)
-        #Normalize the output data    
-        network_output=self.normalize_data(network_output,min_midi_value,max_midi_value)
+        #Converting the output data in range of 0-37
+        for i in range(len(network_output)):
+            network_output[i]=note_to_int[network_output[i]]
         #Converting 2d list to 2d numpy array
         network_input=np.array(network_input)
         #Reshaping the 2d numpy array to 3d array
