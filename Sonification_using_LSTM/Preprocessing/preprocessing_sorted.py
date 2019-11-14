@@ -161,7 +161,7 @@ class PreprocessingTrainingData():
         # get all right hand note names
         right_hand_notes = sorted(set(item for item in notes_from_training_data))
         #Get note to midi number mapping
-        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("../A.txt")
+        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("A.txt")
         #Get maximum and minimum midi number values
         note_to_int,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
         
