@@ -138,12 +138,8 @@ class PreprocessingTrainingData():
         sorted_notes = np.unique(Y)
         max_note = np.max(Y)
         min_note = np.min(Y)
-        print(X)
-        print(Y)
-        print(max_note)
-        print(min_note)
-        print(sorted_notes)
-        return network_input,network_output
+        
+        return X,Y
 
 
     """
@@ -187,14 +183,15 @@ class PreprocessingTrainingData():
         
         #Trial function 
         network_input,network_output=self.bakchodi(network_input,network_output)
-
-
+        
+        network_input=list(network_input)
+        network_output=list(network_output)
 
         #Number of input batches
         n_patterns = len(network_input)
         #Normalize the input data
-        for i in range(len(network_input)):    
-            network_input[i]=self.normalize_data(network_input[i],min_midi_value,max_midi_value)
+        for i in range(len(network_input)):  
+            network_input[i]=self.normalize_data(list(network_input[i]),min_midi_value,max_midi_value) 
         #Converting the output data in range of 0-37
         for i in range(len(network_output)):
             network_output[i]=note_to_int[network_output[i]]
