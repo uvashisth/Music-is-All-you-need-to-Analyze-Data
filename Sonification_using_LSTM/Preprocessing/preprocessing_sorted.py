@@ -4,12 +4,15 @@ import sys
 import os
 import logging
 from fnmatch import fnmatch
+from collections import Counter
+import csv
 
 #Third Party imports
 from music21 import *
 import numpy as np
 import torch 
 from sklearn import preprocessing
+from matplotlib import pyplot as plt
 import pandas as pd
 
 #Local Modules
@@ -94,6 +97,55 @@ class PreprocessingTrainingData():
         for i in range(len(list_of_input_values)):
             list_of_input_values[i]=(list_of_input_values[i]-min_value)/(max_value-min_value)
         return list_of_input_values
+
+    def bakchodi(self, network_input,network_output):
+        # print(network_input)
+        # print(network_output)
+        network_input=np.asarray(network_input)
+        network_output=np.asarray(network_output)
+        SIZE = 10000
+        input_length = 50
+
+        X_orig = network_input
+        Y_orig = network_output
+        all_notes = np.unique(X_orig)
+        count_notes_X = np.zeros(128)
+        count_notes_Y = np.zeros(128)
+            
+        notes_in_set = 0
+        index = 0
+        new_set_X = []
+        new_set_Y = []
+        x = np.zeros(input_length)
+        while (notes_in_set < SIZE and index < len(X_orig)):
+            x = np.copy(X_orig[index].astype(int)) 
+            y = np.copy(Y_orig[index].astype(int))
+            norm_count_notes_x = np.mean(count_notes_X[x] / (np.mean(count_notes_X) + 500))
+            norm_count_notes_y = count_notes_Y[y] / (np.mean(count_notes_Y) + 50)
+            if norm_count_notes_x < 1:
+                new_set_X.append(np.copy(X_orig[index]))
+                new_set_Y.append(np.copy(Y_orig[index]))
+                count_notes_X[x] += 1
+                count_notes_Y[y] += 1
+                notes_in_set += 1
+            elif norm_count_notes_y < 1:
+                new_set_X.append(np.copy(X_orig[index]))
+                new_set_Y.append(np.copy(Y_orig[index]))
+                count_notes_X[x] += 1
+                count_notes_Y[y] += 1
+                notes_in_set += 1
+            index += 1    
+            
+        X = np.array(new_set_X)
+        Y = np.array(new_set_Y)
+
+        sorted_notes = np.unique(Y)
+        max_note = np.max(Y)
+        min_note = np.min(Y)
+        
+        return X,Y
+
+
     """
     This function is to generate training data i.e model input,output,max value,min value
     Input Parameters: Set of input notes read from midi files
@@ -132,11 +184,22 @@ class PreprocessingTrainingData():
                 network_output.append(int(sequence_out) )
         #Check if length of input and output is same
         assert len(network_input) == len(network_output), len(network_input)
+        
+        #Trial function 
+        network_input,network_output=self.bakchodi(network_input,network_output)
+        
+        network_input=list(network_input)
+        network_output=list(network_output)
+
         #Number of input batches
         n_patterns = len(network_input)
         #Normalize the input data
-        for i in range(len(network_input)):    
-            network_input[i]=self.normalize_data(network_input[i],min_midi_value,max_midi_value)
+
+
+        for i in range(len(network_input)):  
+            network_input[i]=self.normalize_data(list(network_input[i]),min_midi_value,max_midi_value) 
+        
+        
         #Converting the output data in range of 0-37
         for i in range(len(network_output)):
             network_output[i]=note_to_int[network_output[i]]
@@ -191,14 +254,10 @@ if __name__=="__main__":
         final_array.append(temp)
     
     df=pd.DataFrame(final_array)
-    df.to_csv('network_input_original.csv', index=False, header=False)
+    df.to_csv('network_input.csv', index=False, header=False)
 
     df=pd.DataFrame(network_output)
-    df.to_csv('network_output_original.csv', index=False, header=False)
-
-
-    # network_input=network_input.cpu().numpy().tolist()
-    # network_output=network_output.cpu().numpy().tolist()
+    df.to_csv('network_output.csv', index=False, header=False)
     # temp=[]
     # for i in range(len(network_input)):
     #     for j in range(len(network_input[i])):
