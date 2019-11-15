@@ -10,6 +10,7 @@ from music21 import *
 import numpy as np
 import torch 
 from sklearn import preprocessing
+import pandas as pd
 
 #Local Modules
 from util.midi_class_mapping import MidiClassMapping
@@ -176,27 +177,47 @@ class PreprocessingTrainingData():
 
 if __name__=="__main__":
     network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\CombinedData")
+    print(max_midi_number)
+    print(min_midi_number)
+    print(int_to_note)
     network_input=network_input.cpu().numpy().tolist()
     network_output=network_output.cpu().numpy().tolist()
-    temp=[]
+    
+    final_array=[]
     for i in range(len(network_input)):
+        temp=[]
         for j in range(len(network_input[i])):
             temp.extend(network_input[i][j])
-    temp=sorted(temp)
-    network_output=sorted(network_output)
-    print(Counter(temp))
-    print(Counter(network_output))
-    labels, values = zip(*Counter(network_output).items())
-    indexes = np.arange(len(labels))
-    width = 1
+        final_array.append(temp)
+    
+    df=pd.DataFrame(final_array)
+    df.to_csv('network_input_original.csv', index=False, header=False)
 
-    plt.bar(indexes, values, width)
-    plt.xticks(indexes + width * 0.5, labels)
-    plt.show()
-    labels, values = zip(*Counter(temp).items())
-    indexes = np.arange(len(labels))
-    width = 1
+    df=pd.DataFrame(network_output)
+    df.to_csv('network_output_original.csv', index=False, header=False)
 
-    plt.bar(indexes, values, width)
-    plt.xticks(indexes + width * 0.5, labels)
-    plt.show()
+
+    # network_input=network_input.cpu().numpy().tolist()
+    # network_output=network_output.cpu().numpy().tolist()
+    # temp=[]
+    # for i in range(len(network_input)):
+    #     for j in range(len(network_input[i])):
+    #         temp.extend(network_input[i][j])
+    # temp=sorted(temp)
+    # network_output=sorted(network_output)
+    # print(Counter(temp))
+    # print(Counter(network_output))
+    # labels, values = zip(*Counter(network_output).items())
+    # indexes = np.arange(len(labels))
+    # width = 1
+
+    # plt.bar(indexes, values, width)
+    # plt.xticks(indexes + width * 0.5, labels)
+    # plt.show()
+    # labels, values = zip(*Counter(temp).items())
+    # indexes = np.arange(len(labels))
+    # width = 1
+
+    # plt.bar(indexes, values, width)
+    # plt.xticks(indexes + width * 0.5, labels)
+    # plt.show()
