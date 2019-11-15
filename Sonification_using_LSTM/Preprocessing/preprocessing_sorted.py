@@ -196,8 +196,13 @@ class PreprocessingTrainingData():
         #Normalize the input data
 
 
+<<<<<<< HEAD
         for i in range(len(network_input)):  
             network_input[i]=self.normalize_data(list(network_input[i]),min_midi_value,max_midi_value) 
+=======
+        # for i in range(len(network_input)):  
+        #     network_input[i]=self.normalize_data(list(network_input[i]),min_midi_value,max_midi_value) 
+>>>>>>> master
         
         
         #Converting the output data in range of 0-37
@@ -279,4 +284,8 @@ if __name__=="__main__":
 
     # plt.bar(indexes, values, width)
     # plt.xticks(indexes + width * 0.5, labels)
+<<<<<<< HEAD
     # plt.show()
+=======
+    # plt.show()
+>>>>>>> master
