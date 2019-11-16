@@ -58,7 +58,6 @@ class PreprocessingTrainingData():
         try: 
             # Extracting the instrument parts
             notes_to_parse = midi[0].recurse()
-        
         except: 
             # Extracting the notes in a flat structure
             notes_to_parse = midi.flat.notes
@@ -70,6 +69,14 @@ class PreprocessingTrainingData():
             elif isinstance(element, chord.Chord):
                 # Taking the note with the highest octave.
                 notes_i.append(str(element.pitches[-1])) 
+        # for element in notes_to_parse_left:
+        #     if isinstance(element, note.Note):
+        #         # Taking the note
+        #         notes_i.append(str(element.pitch))
+        #     elif isinstance(element, chord.Chord):
+        #         # Taking the note with the highest octave.
+        #         notes_i.append(str(element.pitches[-1])) 
+        # print(notes_i)
         return notes_i
     
     """
@@ -161,7 +168,7 @@ class PreprocessingTrainingData():
         # get all right hand note names
         right_hand_notes = sorted(set(item for item in notes_from_training_data))
         #Get note to midi number mapping
-        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("A.txt")
+        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("C:\\Users\\utkar\\Downloads\\Github Repos\\SonificationML\\Sonification_using_LSTM\\A.txt")
         #Get maximum and minimum midi number values
         note_to_int,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
         
@@ -239,25 +246,27 @@ class PreprocessingTrainingData():
 
 
 if __name__=="__main__":
-    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\CombinedData")
+    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("C:\\Users\\utkar\\Downloads\\Github Repos\\SonificationML\\Dataset\\Clementi dataset")
     print(max_midi_number)
     print(min_midi_number)
     print(int_to_note)
-    network_input=network_input.cpu().numpy().tolist()
-    network_output=network_output.cpu().numpy().tolist()
+    print(network_input)
+    print(network_output)
+    # network_input=network_input.cpu().numpy().tolist()
+    # network_output=network_output.cpu().numpy().tolist()
     
-    final_array=[]
-    for i in range(len(network_input)):
-        temp=[]
-        for j in range(len(network_input[i])):
-            temp.extend(network_input[i][j])
-        final_array.append(temp)
+    # final_array=[]
+    # for i in range(len(network_input)):
+    #     temp=[]
+    #     for j in range(len(network_input[i])):
+    #         temp.extend(network_input[i][j])
+    #     final_array.append(temp)
     
-    df=pd.DataFrame(final_array)
-    df.to_csv('network_input.csv', index=False, header=False)
+    # df=pd.DataFrame(final_array)
+    # df.to_csv('network_input.csv', index=False, header=False)
 
-    df=pd.DataFrame(network_output)
-    df.to_csv('network_output.csv', index=False, header=False)
+    # df=pd.DataFrame(network_output)
+    # df.to_csv('network_output.csv', index=False, header=False)
     # temp=[]
     # for i in range(len(network_input)):
     #     for j in range(len(network_input[i])):
