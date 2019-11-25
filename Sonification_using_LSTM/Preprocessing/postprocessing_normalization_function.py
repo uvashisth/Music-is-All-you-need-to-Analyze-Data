@@ -15,13 +15,14 @@ def normalize(filepath, min_note, max_note):
     
     data = pd.read_csv(filepath)
     df=pd.DataFrame(data)
-    df = df.drop(df.index[0:5])
+    #df = df.drop(df.index[0:5])
+    df.dropna(inplace = True)
 
     
     
     population_value = df.iloc[:,1:2]
     
-    my_list = df["population"].values
+    my_list = df["Adj Close"].values
     #print(my_list)
     
     minimum_pop = my_list.min()
