@@ -220,3 +220,5 @@ if __name__=="__main__":
 
     # plt.bar(indexes, values, width)
     # plt.xticks(indexes + width * 0.5, labels)
+    # plt.show()
+    #print("Hello")
