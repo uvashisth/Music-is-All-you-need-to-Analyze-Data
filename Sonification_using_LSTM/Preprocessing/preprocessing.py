@@ -46,6 +46,7 @@ class PreprocessingTrainingData():
     """
     def get_notes(self,filename):
         #Read the midi file
+        print("Entered here")
         midi = converter.parse(filename)
         notes_i = []
         notes_to_parse = None
@@ -54,9 +55,12 @@ class PreprocessingTrainingData():
         
         try: 
             # Extracting the instrument parts
-            notes_to_parse = midi[0].recurse()
-        
-        except: 
+            parts = midi.getElementsByClass(stream.Part)
+            notes_to_parse= midi.getElementsByClass(stream.Part)
+            print(parts[1])
+            # print(midi.recurse())
+        except Exception as e: 
+            print(e)
             # Extracting the notes in a flat structure
             notes_to_parse = midi.flat.notes
         #Iterate through each and every element in the notes
@@ -92,7 +96,7 @@ class PreprocessingTrainingData():
         
         #Normalize each value of the list
         for i in range(len(list_of_input_values)):
-            list_of_input_values[i]=(list_of_input_values[i]-min_value)/(max_value-min_value)
+            list_of_input_values[i]=(int(list_of_input_values[i])-int(min_value))/((max_value)-(min_value))
         return list_of_input_values
     """
     This function is to generate training data i.e model input,output,max value,min value
@@ -109,7 +113,7 @@ class PreprocessingTrainingData():
         # get all right hand note names
         right_hand_notes = sorted(set(item for item in notes_from_training_data))
         #Get note to midi number mapping
-        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("A.txt")
+        note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Sonification_using_LSTM\\A.txt")
         #Get maximum and minimum midi number values
         note_to_int,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
         
@@ -176,10 +180,11 @@ class PreprocessingTrainingData():
 
 
 if __name__=="__main__":
-    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\CombinedData")
+    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\Clementi dataset\\Clementi dataset\\clementi_opus36_1_1.mid")
     print(max_midi_number)
     print(min_midi_number)
     print(int_to_note)
+    print(network_input)
     network_input=network_input.cpu().numpy().tolist()
     network_output=network_output.cpu().numpy().tolist()
     

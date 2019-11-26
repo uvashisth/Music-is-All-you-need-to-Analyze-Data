@@ -42,7 +42,7 @@ for i, track in enumerate(mid.tracks):
         else:
             print("Error")
 track1.append(Message('program_change', program=12, time=0,channel=2))
-
+python(track1)
 midi1.save('new_song.mid')
 
 

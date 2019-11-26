@@ -42,6 +42,11 @@ def normalize(filepath, min_note, max_note):
     
     return(normalized_list)
     
+if __name__ == '__main__':
+    result=normalize("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\Test_Data\\trading.csv", 50,90)
+    for i in range(len(result)):
+        result[i]=(result[i]*(90-50)+50)/90
+    print(result)
    
     
     
