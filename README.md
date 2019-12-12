@@ -34,3 +34,8 @@ We are using a public Dataset which comprises of two different dataset.
 ![Data Influencing Technique](https://drive.google.com/uc?export=view&id=1pwKrffEWWBPp2HBze9y8z3FZobtoa22J)
 
 To know more about the architecture flow and data influencing technique please refer to the Report in the repository
+
+
+
+### License
+Distributed under the MIT License. See LICENSE for more information.
