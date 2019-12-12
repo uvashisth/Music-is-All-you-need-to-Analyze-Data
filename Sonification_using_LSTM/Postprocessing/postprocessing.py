@@ -11,6 +11,7 @@ class PostProcessing():
         output_MIDI_file = MIDIFile(1)
         output_MIDI_file.addTempo(self.track, self.time, self.tempo)
         for i, pitch in enumerate(midi_number_list):
+            self.volume=int(((pitch-50)/(90-50))*100)
             output_MIDI_file.addNote(self.track, self.channel, pitch, self.time + i, self.duration, self.volume)
         with open(file_path,"wb") as output_file:
             output_MIDI_file.writeFile(output_file)

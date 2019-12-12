@@ -38,7 +38,16 @@ class PreprocessingTrainingData():
         notes = self.get_notes(file_path)
         #Return the list of notes
         return notes
-    
+    def extract_notes_from_text(self,file_path):
+        #Intializing empty set
+        notes = []
+        #Check if the input path is a file or not
+        f = open(file_path, "r")
+        for x in f:
+            notes.append(int(str(x).replace("\n","")))
+        # print(notes)
+        #Return the list of notes
+        return notes
     """
     This function is to read midi file and get notes
     Input Parameters:Absolute File path of the midi file
@@ -46,7 +55,6 @@ class PreprocessingTrainingData():
     """
     def get_notes(self,filename):
         #Read the midi file
-        print("Entered here")
         midi = converter.parse(filename)
         notes_i = []
         notes_to_parse = None
@@ -55,12 +63,9 @@ class PreprocessingTrainingData():
         
         try: 
             # Extracting the instrument parts
-            parts = midi.getElementsByClass(stream.Part)
-            notes_to_parse= midi.getElementsByClass(stream.Part)
-            print(parts[1])
-            # print(midi.recurse())
-        except Exception as e: 
-            print(e)
+            notes_to_parse = midi[0].recurse()
+        
+        except: 
             # Extracting the notes in a flat structure
             notes_to_parse = midi.flat.notes
         #Iterate through each and every element in the notes
@@ -92,11 +97,58 @@ class PreprocessingTrainingData():
     Input Parameters: List of input values
     Output Parameters: List of normalized data
     """
+    def bakchodi(self, network_input,network_output):
+            # print(network_input)
+        # print(network_output)
+        network_input=np.asarray(network_input)
+        network_output=np.asarray(network_output)
+        SIZE = 10000
+        input_length = 50
+
+        X_orig = network_input
+        Y_orig = network_output
+        all_notes = np.unique(X_orig)
+        count_notes_X = np.zeros(128)
+        count_notes_Y = np.zeros(128)
+            
+        notes_in_set = 0
+        index = 0
+        new_set_X = []
+        new_set_Y = []
+        x = np.zeros(input_length)
+        while (notes_in_set < SIZE and index < len(X_orig)):
+            x = np.copy(X_orig[index].astype(int)) 
+            y = np.copy(Y_orig[index].astype(int))
+            norm_count_notes_x = np.mean(count_notes_X[x] / (np.mean(count_notes_X) + 500))
+            norm_count_notes_y = count_notes_Y[y] / (np.mean(count_notes_Y) + 50)
+            if norm_count_notes_x < 1:
+                new_set_X.append(np.copy(X_orig[index]))
+                new_set_Y.append(np.copy(Y_orig[index]))
+                count_notes_X[x] += 1
+                count_notes_Y[y] += 1
+                notes_in_set += 1
+            elif norm_count_notes_y < 1:
+                new_set_X.append(np.copy(X_orig[index]))
+                new_set_Y.append(np.copy(Y_orig[index]))
+                count_notes_X[x] += 1
+                count_notes_Y[y] += 1
+                notes_in_set += 1
+            index += 1    
+            
+        X = np.array(new_set_X)
+        Y = np.array(new_set_Y)
+
+        sorted_notes = np.unique(Y)
+        max_note = np.max(Y)
+        min_note = np.min(Y)
+        
+        return X,Y
+
     def normalize_data(self,list_of_input_values,min_value,max_value):
         
         #Normalize each value of the list
         for i in range(len(list_of_input_values)):
-            list_of_input_values[i]=(int(list_of_input_values[i])-int(min_value))/((max_value)-(min_value))
+            list_of_input_values[i]=(list_of_input_values[i]-min_value)/(max_value-min_value)
         return list_of_input_values
     """
     This function is to generate training data i.e model input,output,max value,min value
@@ -114,6 +166,8 @@ class PreprocessingTrainingData():
         right_hand_notes = sorted(set(item for item in notes_from_training_data))
         #Get note to midi number mapping
         note_to_midi_number_mapping=MidiNotesMapping().get_midi_number_notes_mapping("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Sonification_using_LSTM\\A.txt")
+        print(right_hand_notes)
+        print(note_to_midi_number_mapping)
         #Get maximum and minimum midi number values
         note_to_int,int_to_note,max_midi_value,min_midi_value=MidiClassMapping().midi_notes_to_class_mapping(right_hand_notes,note_to_midi_number_mapping)
         
@@ -136,6 +190,9 @@ class PreprocessingTrainingData():
                 network_output.append(int(sequence_out) )
         #Check if length of input and output is same
         assert len(network_input) == len(network_output), len(network_input)
+        network_input,network_output=self.bakchodi(network_input,network_output)
+        network_input=list(network_input)
+        network_output=list(network_output)
         #Number of input batches
         n_patterns = len(network_input)
         #Normalize the input data
@@ -155,16 +212,17 @@ class PreprocessingTrainingData():
     Output Parameters:
     """
     def preprocess_notes(self,path):
-        pattern = "*.mid"
+        pattern = "*.txt"
         notes=[]
-        if not path.endswith(".mid"):
+        if not path.endswith(".txt"):
             for path, subdirs, files in os.walk(path):
                 for name in files:
                     if fnmatch(name, pattern):
-                        notes.append(self.extract_notes(os.path.join(path, name)))
+                        notes.append(self.extract_notes_from_text(os.path.join(path, name)))
         else:        
-            notes.append(self.extract_notes(path))
+            notes.append(self.extract_notes_from_text(path))
         number_of_output_notes=self.number_of_output_notes_generated(notes)
+        print(number_of_output_notes)
         network_input,network_output,max_midi_number,min_midi_number,int_to_note=self.generate_training_data(notes)
         for i in range(len(network_input)):
             for j in range(len(network_input[i])):
@@ -180,26 +238,27 @@ class PreprocessingTrainingData():
 
 
 if __name__=="__main__":
-    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\Clementi dataset\\Clementi dataset\\clementi_opus36_1_1.mid")
-    print(max_midi_number)
-    print(min_midi_number)
-    print(int_to_note)
+    network_input,network_output,max_midi_number,min_midi_number,int_to_note=PreprocessingTrainingData().preprocess_notes("D:\\Prem\\Sem1\\MM in AI\\Project\\Project\\Sonification-using-Deep-Learning\\Dataset\\traj")
     print(network_input)
-    network_input=network_input.cpu().numpy().tolist()
-    network_output=network_output.cpu().numpy().tolist()
+    print(network_output)
+    print(int_to_note)
+    print(min_midi_number)
+    print(max_midi_number)
+    # network_input=network_input.cpu().numpy().tolist()
+    # network_output=network_output.cpu().numpy().tolist()
     
-    final_array=[]
-    for i in range(len(network_input)):
-        temp=[]
-        for j in range(len(network_input[i])):
-            temp.extend(network_input[i][j])
-        final_array.append(temp)
+    # final_array=[]
+    # for i in range(len(network_input)):
+    #     temp=[]
+    #     for j in range(len(network_input[i])):
+    #         temp.extend(network_input[i][j])
+    #     final_array.append(temp)
     
-    df=pd.DataFrame(final_array)
-    df.to_csv('network_input_original.csv', index=False, header=False)
+    # df=pd.DataFrame(final_array)
+    # df.to_csv('network_input_original.csv', index=False, header=False)
 
-    df=pd.DataFrame(network_output)
-    df.to_csv('network_output_original.csv', index=False, header=False)
+    # df=pd.DataFrame(network_output)
+    # df.to_csv('network_output_original.csv', index=False, header=False)
 
 
     # network_input=network_input.cpu().numpy().tolist()
