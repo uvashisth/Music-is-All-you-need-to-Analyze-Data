@@ -27,9 +27,10 @@ We are using a public Dataset which comprises of two different dataset.
 * Piano Dataset - This dataset consists of 300 different songs
 
 #### Overall Architecture Flow
-![Overall Architecture Flow](https://drive.google.com/file/d/1r8Q4BxBVWeJIikNY0nHMtKuhPM-sJnzj/view?usp=sharing)
+
+![Overall Architecture Flow](https://drive.google.com/uc?export=view&id=1r8Q4BxBVWeJIikNY0nHMtKuhPM-sJnzj)
 
 #### Data Influencing Technique
-![Data Influencing Technique](https://drive.google.com/file/d/1pwKrffEWWBPp2HBze9y8z3FZobtoa22J/view?usp=sharing)
+![Data Influencing Technique](https://drive.google.com/uc?export=view&id=1r8Q4BxBVWeJIikNY0nHMtKuhPM-sJnzj)
 
 To know more about the architecture flow and data influencing technique please refer to the Report in the repository
