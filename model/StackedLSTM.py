@@ -7,6 +7,7 @@ class StackedLSTM(nn.Module):
 
     '''
     Create a StackedLSTM model
+        - This class inherits from nnModule of Pytorch
 
     '''
 
@@ -28,15 +29,17 @@ class StackedLSTM(nn.Module):
         '''
         super().__init__()
         
+        self.input_size = input_size
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.output_size = output_size
+        self.batch_size = batch_size
 
-        self.layer1 = nn.LSTM(input_size = input_size, hidden_size = hidden_size, batch_first = True)
-        self.layer2 = nn.LSTM(input_size = hidden_size, hidden_size = output_size,batch_first = True)
+        self.layer1 = nn.LSTM(input_size = self.input_size, hidden_size = self.hidden_size, batch_first = True)
+        self.layer2 = nn.LSTM(input_size = self.hidden_size, hidden_size = self.output_size,batch_first = True)
         
         self.dropout = nn.Dropout(0.5)
-        self.linear = nn.Linear(output_size, output_size)
+        self.linear = nn.Linear(self.output_size, self.output_size)
 
     def forward(self, x):
         '''
@@ -50,21 +53,20 @@ class StackedLSTM(nn.Module):
 
         '''
         
-        output, _ = self.layer1(x)        
+        output, _ = self.layer1(x)    
 
         #output = self.dropout(output)
         
         output, _ = self.layer2(output)
         
         # stack up lstm outputs
-        output = output.contiguous().view(-1, 98)
+        output = output.contiguous().view(-1, self.output_size)
         
         output = self.dropout(output)
         output = self.linear(output)
         
-        
         # reshape to be batch_size first
-        output = output.view(batch_size, -1)
+        output = output.view(self.batch_size, -1)
 
         # get last batch of labels
         output = output[:, -self.output_size:] 
