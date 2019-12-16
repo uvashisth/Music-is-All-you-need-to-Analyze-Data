@@ -1,4 +1,4 @@
-# Music is all you need to Analyze Data
+# UAlberta Multimedia Master Program - Music is all you need to Analyze Data
 ## Sonification using Deep Learning Techniques
 ### Sonification using LSTM
 __________________________________________________________________________________
