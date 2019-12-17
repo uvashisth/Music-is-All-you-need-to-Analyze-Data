@@ -96,7 +96,7 @@ class ConvertToMIDI():
         # print(counter)
         print(final_list)
 
-        self.cello_c_chord.write('..output/{}.mid'.format(file_name))
+        self.cello_c_chord.write('output/{}.mid'.format(file_name))
             
         
         
