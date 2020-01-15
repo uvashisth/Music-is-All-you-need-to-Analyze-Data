@@ -134,3 +134,13 @@ python
 ```
 #### Testing
 Since our testing data is independent from our training dataset you can give any time-series dataset normalize the dataset based on postprocessing_normalize file and give it as an input to the music generation file.
+
+
+
+#### Authors:
+
+| Name | github handle |
+| ---- | ------ |
+| Jatin Dawar | [@jatin008](https://github.com/jatin008) |
+| Prem Raheja     | [@prem1409](https://github.com/prem1409) |
+| Utkarsh Vashisth     | [@uvashisth](https://github.com/uvashisth) |
