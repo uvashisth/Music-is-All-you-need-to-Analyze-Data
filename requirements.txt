@@ -3,7 +3,7 @@ midi==0.2.3
 MIDIUtil==1.2.1
 mido==1.2.9
 music21==5.7.0
-numpy==1.16.5
+numpy==1.22.0
 opencv-python==4.1.1.26
 pandas==0.25.1
 pretty-midi==0.2.8
